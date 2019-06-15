@@ -22,5 +22,22 @@ file.remove("household_power_consumption.txt")
 rm(temp, con, fileURL) 
 
 #sort and prepare df
-  
+df <- df %>% 
+  select(Global_active_power, Date) %>% 
+  mutate(Date = dmy(Date)) %>% 
+  filter(Date >= ymd("2007-02-01") & Date <= ymd("2007-02-02")) %>% 
+  rename(GAP = Global_active_power) %>% 
+  mutate(GAP = as.numeric(GAP))
+
 ##Generate plot
+#Specified png that is 480x480pixels - Although defealt; included for specificity
+png(filename = "plot1.png",
+    width = 480, 
+    height = 480, 
+    units = "px")
+hist(df$GAP,
+     col = "red",
+     main = "Global Active Power",
+     xlab = "Global Active Power (kilowatts)",
+     ylab = "Frequency")
+dev.off()
